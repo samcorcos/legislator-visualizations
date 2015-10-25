@@ -52,7 +52,7 @@ Meteor.startup(function () {
                     entity-parent-id
                     and
                     entity-id
-                    Then we references the entity-id against the table
+                    Then we reference the entity-id against the table
                     */
 
 
@@ -133,15 +133,19 @@ Meteor.startup(function () {
               if (currentSponsor) {
                 // check to make sure it has the party identifier for the sponsor
                 if (currentSponsor.terms[0]) {
+                  let ageRe = /(^.+?)-/
+
                   let sponsorParty = currentSponsor.terms[0].party
+                  let sponsorAge = (2015 - +ageRe.exec(currentSponsor.bio.birthday)[1])
+
                   _.each(acts, function(act) {
                     // Make sure the party is either republican or democrat
                     if (sponsorParty === "Democrat" || sponsorParty === "Republican") {
                       // if it does not have the act
-                      if (!_.find(actSet, function(obj) { return obj.act === act})) {
+                      if (!_.find(actSet, function(obj) { return obj.sponsor_age === sponsorAge})) {
                         // give the object an "act" property
                         let actObj = {
-                          act: act,
+                          sponsor_age: sponsorAge,
                           Republican: 0,
                           Democrat: 0
                         }
@@ -150,7 +154,7 @@ Meteor.startup(function () {
 
                       } else { // if the act has already been referenced
                         let currentAct = _.find(actSet, function(obj) {
-                          return obj.act === act;
+                          return obj.sponsor_age === sponsorAge;
                         })
                         currentAct[sponsorParty] += 1;
                       }
