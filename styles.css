@@ -24,3 +24,26 @@ div.tooltip {
   border-radius: 8px;
   pointer-events: none;
 }
+
+/* Map d3 styling */
+
+.subunit {
+  fill: grey;
+  stroke: #A9A9A9;
+  stroke-width: 1;
+}
+
+.state:hover {
+  fill-opacity: 0.5;
+}
+
+.bubble {
+  fill: orange;
+  fill-opacity: .5;
+  stroke: #fff;
+  stroke-width: .5px;
+}
+
+.bubble :hover {
+  stroke: #000;
+}

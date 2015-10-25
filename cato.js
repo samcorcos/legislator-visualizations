@@ -1,6 +1,6 @@
 if (Meteor.isClient) {
   Meteor.startup(function() {
-    (function() {
+    var one = function() {
       var width = 900
       var height = 300
 
@@ -77,8 +77,10 @@ if (Meteor.isClient) {
               .style("opacity", 0);
           });
       })
-    })()
-    (function() {
+    }
+    one()
+
+    var two = function() {
         var height = 600,
             width = 1000;
 
@@ -106,7 +108,7 @@ if (Meteor.isClient) {
             .attr("class", function(d) { return "subunit " + d.id; })
             //added id in above line to use as selector: ex US-NY
             .attr("d", path)
-            .style('fill','#aaa')
+            .style('fill','#ddd')
 
 
 
@@ -132,12 +134,12 @@ if (Meteor.isClient) {
 
           d3.json("states.json", function(error, data) {
             if (error) { throw error };
-            var locations = data.locations;
 
-            locations.forEach(function(location){
-              var state = location.state;
+            _.each(data, function(item) {
+              let total = item.Democrat + item.Republican;
+              let state = item.state;
               var thisState = d3.select('path[class*='+state+']');
-              locationConcentration[state] += 1;
+              locationConcentration[state] = total;
             })
 
             //////Added dot in the middle of the state
@@ -155,8 +157,9 @@ if (Meteor.isClient) {
                     tempArray.push(locationConcentration[num])
                   }
 
-                  var radius = d3.scale.sqrt()
-                    .range([d3.min(tempArray), d3.max(tempArray)]);
+                  var radius = d3.scale.linear()
+                    .domain([d3.min(tempArray), d3.max(tempArray)])
+                    .range([1, 100]);
 
                   var abbrev = d.id.split('-').pop();
 
@@ -165,7 +168,8 @@ if (Meteor.isClient) {
 
             })
         })
-    })()
+    }
+    two()
 
 
 
