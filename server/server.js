@@ -14,6 +14,7 @@
 //   console.log("Added " + legislatorArray.length + " legislators.");
 //
 //   errorList = [];
+//   legisList = [];
 //
 //   // Must bind to the file system environment or it will not work
 //   var populateBills = Meteor.bindEnvironment(function(files) {
@@ -141,6 +142,8 @@
 //                   _.each(acts, function(act) {
 //                     // Make sure the party is either republican or democrat
 //                     if (sponsorParty === "Democrat" || sponsorParty === "Republican") {
+//                       legisList.push(currentSponsor.id.opensecrets)
+//
 //                       // if it does not have the act
 //                       if (!_.find(actSet, function(obj) { return obj.sponsor_age === sponsorAge})) {
 //                         // give the object an "act" property
@@ -188,7 +191,7 @@
 //   console.log("Added " + files.length + " bills.");
 //
 //   // save file to desktop
-//   let res = fs.writeFileSync("/Users/xxxx/Desktop/acts.json", JSON.stringify(actSet));
+//   let res = fs.writeFileSync("/Users/xxxx/Desktop/legislators.json", JSON.stringify(_.uniq(legisList)));
 //   console.log(res);
 //
 //   let err = fs.writeFileSync("/Users/xxxx/Desktop/err.txt", _.uniq(errorList).join("\r\n"));
