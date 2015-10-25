@@ -137,15 +137,16 @@ Meteor.startup(function () {
 
                   let sponsorParty = currentSponsor.terms[0].party
                   let sponsorAge = (2015 - +ageRe.exec(currentSponsor.bio.birthday)[1])
+                  let termCount = currentSponsor.terms.length
 
                   _.each(acts, function(act) {
                     // Make sure the party is either republican or democrat
                     if (sponsorParty === "Democrat" || sponsorParty === "Republican") {
                       // if it does not have the act
-                      if (!_.find(actSet, function(obj) { return obj.sponsor_age === sponsorAge})) {
+                      if (!_.find(actSet, function(obj) { return obj.term_count === termCount})) {
                         // give the object an "act" property
                         let actObj = {
-                          sponsor_age: sponsorAge,
+                          term_count: termCount,
                           Republican: 0,
                           Democrat: 0
                         }
@@ -154,7 +155,7 @@ Meteor.startup(function () {
 
                       } else { // if the act has already been referenced
                         let currentAct = _.find(actSet, function(obj) {
-                          return obj.sponsor_age === sponsorAge;
+                          return obj.term_count === termCount;
                         })
                         currentAct[sponsorParty] += 1;
                       }
@@ -187,6 +188,15 @@ Meteor.startup(function () {
   populateBills(files)
   console.log("Added " + files.length + " bills.");
 
+
+  actSet.sort(function(a, b){
+    var keyA = a.term_count,
+    keyB = b.term_count;
+    // Compare the 2 numbers
+    if(keyA < keyB) return -1;
+    if(keyA > keyB) return 1;
+    return 0;
+});
   // save file to desktop
   let res = fs.writeFileSync("/Users/xxxx/Desktop/acts.json", JSON.stringify(actSet));
   console.log(res);
